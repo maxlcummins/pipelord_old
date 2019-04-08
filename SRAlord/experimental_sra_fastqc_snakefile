@@ -1,0 +1,84 @@
+import re
+import os
+import pandas as pd
+
+#open config file from pwd: config.yaml
+configfile: "sra_dl_config.yaml"
+
+#pull names of files generated in set-up step that contain filenames of reads, gene databases and mlst databases
+file = config["sample_ids"]
+
+SRA_nums = pd.read_csv(file, header=0).T.squeeze()
+
+
+#strip filename suffixes from reads and databases
+#convert from dataframes to pandas series object type (.T.squeeze())
+
+print(SRA_nums)
+
+rule all:
+    input:
+        #expand("/home/mlcummin/Data/ST117/reads/{SRA_num}_R1.fastq.gz", SRA_num=SRA_nums),
+        #expand("/home/mlcummin/Data/ST117/reads/{SRA_num}_R2.fastq.gz", SRA_num=SRA_nums)
+        expand("/home/mlcummin/Data/ST117/results/{SRA_num}_R1_fastqc.html", SRA_num=SRA_nums),
+        expand("/home/mlcummin/Data/ST117/intermediate/{SRA_num}_R1_fastqc.zip", SRA_num=SRA_nums),
+        expand("/home/mlcummin/Data/ST117/results/{SRA_num}_R2_fastqc.html", SRA_num=SRA_nums),
+        expand("/home/mlcummin/Data/ST117/intermediate/{SRA_num}_R2_fastqc.zip", SRA_num=SRA_nums)
+
+rule download_sra:
+    output:
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_pass_1.fastq.gz",
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_pass_2.fastq.gz"
+    conda:
+        "parallel-fastq-dump.yaml"
+    #params:
+    params:
+        id = "{SRA_num}"
+    shell:
+        "parallel-fastq-dump --gzip --skip-technical --read-filter pass --dumpbase --split-files --clip --outdir /home/mlcummin/Data/ST117 --sra-id {params.id} --threads 8"
+
+rule rename:
+    input:
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_pass_1.fastq.gz",
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_pass_2.fastq.gz"
+    output:
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_R1.fastq.gz",
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_R2.fastq.gz"
+    shell:
+        "mv {input[0]} {output[0]}; mv {input[1]} {output[1]}"
+
+rule fastqc:
+    input:
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_R1.fastq.gz",
+        "/home/mlcummin/Data/ST117/reads/{SRA_num}_R2.fastq.gz"
+    output:
+        "/home/mlcummin/Data/ST117/results/{SRA_num}_R1_fastqc.html",
+        "/home/mlcummin/Data/ST117/intermediate/{SRA_num}_R1_fastqc.zip",
+        "/home/mlcummin/Data/ST117/results/{SRA_num}_R2_fastqc.html",
+        "/home/mlcummin/Data/ST117/intermediate/{SRA_num}_R2_fastqc.zip"
+    conda:
+        "fastqc.yaml"
+    shell:
+        """
+        # Run fastQC and save the output to the current directory
+        fastqc {input[0]} -q -o .
+
+        # Move the files which are used in the workflow
+        mv {wildcards.SRA_num}_R1_fastqc.html {output[0]}
+        mv {wildcards.SRA_num}_R1_fastqc.zip {output[1]}
+            
+        # Run fastQC and save the output to the current directory
+        fastqc {input[1]} -q -o .
+
+        # Move the files which are used in the workflow
+        mv {wildcards.SRA_num}_R2_fastqc.html {output[2]}
+        mv {wildcards.SRA_num}_R2_fastqc.zip {output[3]}
+        """
+
+
+
+
+
+
+
+

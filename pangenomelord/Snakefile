@@ -10,18 +10,18 @@ print(sample_ids)
 
 rule all:
 	input:
-		expand("prokka/gffs/{sample}.gff", sample=sample_ids),
-		"Roary.out"
+		expand(config['output']+"/prokka/gffs/{sample}.gff", sample=sample_ids),
+		config['output']+"/Roary.out"
 
 rule prokka:
 	input:
 		config['assembly_path']+"/{sample}.fasta"
 	output:
-		"prokka/gffs/{sample}.gff"
+		config['output']+"/prokka/gffs/{sample}.gff"
 	conda:
 		"config/prokka.yaml"
 	log:
-		"prokka/logs/{sample}.log"
+		config['output']+"/prokka/logs/{sample}.log"
 	threads:
 		16
 	shell:
@@ -32,18 +32,12 @@ rule prokka:
 
 rule roary:
 	input:
-		expand("prokka/gffs/{sample}.gff", sample=sample_ids)
+		expand(config['output']+"/prokka/gffs/{sample}.gff", sample=sample_ids)
 	output:
-		"Roary.out"
+		config['output']+"/Roary.out"
 	conda:
 		"config/roary.yaml"
 	log:
-		"roary/logs/roary.log"
+		config['output']+"/roary/logs/roary.log"
 	shell:
 		"roary -p 16 -f Roary.out {input}"
-
-
-
-
-
-

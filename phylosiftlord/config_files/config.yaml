@@ -1,0 +1,6 @@
+
+# path to assemblies
+assemblies: /home/Data/salad_ecoli/assemblies
+
+#path to phylosift
+phylosift: /home/phylosift_v1.0.1

@@ -1,5 +1,5 @@
 configfile:
-    "config_files/snake-phylosift.config.yaml"
+    "config_files/config.yaml"
 
 sample_ids, = glob_wildcards(config['assemblies']+"/{sample}.fasta")
 
@@ -8,14 +8,14 @@ print(sample_ids)
 
 rule all:
     input:
-        expand("PSout/{sample}.out", sample=sample_ids),
+        expand(config['output']+"/PSout/{sample}.out", sample=sample_ids),
         "Phylosift.tree"
 
 rule phylosift:
     input:
         config['assemblies']+"/{sample}.fasta",
     output:
-        directory("PSout/{sample}.out")
+        directory(config['output']+"/PSout/{sample}.out")
     shell:
         """
         ~/Data/phylosift_v1.0.1/bin/phylosift search --debug --threads 64 --debug --isolate --besthit --output {output} {input}

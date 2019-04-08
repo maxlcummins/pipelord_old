@@ -13,8 +13,8 @@ print(dbs)
 rule all:
         input:
                 expand(config['ref_dbs']+"/{db}.fa.nhr", db=dbs),
-                expand("blast/{db}/{sample}.csv", db=dbs, sample=sample_ids),
-                expand("blast/{db}/{sample}.new.tsv", db=dbs, sample=sample_ids),
+                expand(config['output']+"/blast/{db}/{sample}.csv", db=dbs, sample=sample_ids),
+                expand(config['output']+"/blast/{db}/{sample}.new.tsv", db=dbs, sample=sample_ids),
 
 rule makeblastdb:
         input:
@@ -22,7 +22,7 @@ rule makeblastdb:
         output:
                 config['ref_dbs']+"/{db}.fa.nhr"
         log:
-                "blast/logs/{db}.log"
+                config['output']+"/blast/logs/{db}.log"
         params:
                 blast_bin = config['blast_bin']
         shell:
@@ -35,9 +35,9 @@ rule blastn:
                 db = config['ref_dbs']+"/{db}.fa",
                 assemblies = config['assembly_path']+"/{sample}.fasta"
         output:
-                "blast/{db}/{sample}.csv"
+                config['output']+"/blast/{db}/{sample}.csv"
         log:
-                "blast/{db}/{sample}.log"
+                config['output']+"/blast/{db}/{sample}.log"
         params:
                 blast_bin = config['blast_bin']
         shell:
@@ -47,9 +47,9 @@ rule blastn:
 
 rule name_cat:
         input:
-                "blast/{db}/{sample}.csv"
+                config['output']+"/blast/{db}/{sample}.csv"
         output:
-                "blast/{db}/{sample}.new.tsv"
+                config['output']+"/blast/{db}/{sample}.new.tsv"
         priority: 8
         shell:
                 """

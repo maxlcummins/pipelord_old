@@ -6,6 +6,9 @@ assembly_path: /home/mlcummin/Data/Snakemake_Shovill/final_assemblies
 #path to blast databases:
 ref_dbs: /home/mlcummin/Data/BlastDBs
 
+#path to output:
+output: /home/mlcummin/Data/output
+
 #path to output directory:
 output: /home/mlcummin/Data/pangenomelord/output
 
