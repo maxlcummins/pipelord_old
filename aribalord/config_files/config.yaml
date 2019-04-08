@@ -1,0 +1,18 @@
+###Configuration for aribalord
+
+# path to output
+output: /home/mlcummin/Data/i3_genome_analysis/ariba
+
+# path to reads
+read_path: /home/mlcummin/Data/i3_reads
+
+# standard gene databases to use for ariba
+gene_dbs: ['plasmidfinder', 'resfinder', 'virulencefinder']
+
+# MLST scheme to use
+mlst_dbs: ['Escherichia coli#1']
+
+# the output name you want for your MLST DB
+mlst_names: ['EC1']
+
+

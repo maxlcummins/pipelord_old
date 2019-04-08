@@ -1,0 +1,37 @@
+configfile:
+    "config/config.yaml"
+
+sample_ids, = glob_wildcards(config['reads']+"/{sample}.R1.fastq.gz")
+
+
+print(sample_ids,)
+
+rule all:
+    input:
+        expand(config['output']+"/assemblies/{sample}.out", sample=sample_ids),
+        expand(config['output']+"/final_assemblies/{sample}.fasta", sample=sample_ids)
+
+
+rule shovill:
+    input:
+        r1 = config['reads']+"/{sample}.R1.fastq.gz",
+        r2 = config['reads']+"/{sample}.R2.fastq.gz"
+    output:      
+        directory(config['output']+"/assemblies/{sample}.out")
+    log:
+        config['output']+"/logs/shovill/{sample}.log"
+    conda:
+        "config/shovill.yaml"
+    shell:
+        """
+        shovill --minlen 200 --outdir {output} --R1 {input.r1} --R2 {input.r2}
+        """
+
+rule rename:
+    input:
+        config['output']+"/assemblies/{sample}.out"
+    output:
+        config['output']+"/final_assemblies/{sample}.fasta"
+    shell:
+        "cp {input}/contigs.fa {output}"
+

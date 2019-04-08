@@ -1,0 +1,13 @@
+###Configuration for bwa_samtools workflow
+
+# path to reads:
+assembly_path: /home/mlcummin/Data/Snakemake_Shovill/final_assemblies
+
+#path to blast databases:
+ref_dbs: /home/mlcummin/Data/BlastDBs
+
+#path to output directory:
+output: /home/mlcummin/Data/pangenomelord/output
+
+#path to bin with blast executables:
+blast_bin: /usr/local/ncbi-blast-2.7.1+/bin

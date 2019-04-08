@@ -1,0 +1,33 @@
+configfile:
+    "config_files/snake-phylosift.config.yaml"
+
+sample_ids, = glob_wildcards(config['assemblies']+"/{sample}.fasta")
+
+print(config['assemblies'])
+print(sample_ids)
+
+rule all:
+    input:
+        expand("PSout/{sample}.out", sample=sample_ids),
+        "Phylosift.tree"
+
+rule phylosift:
+    input:
+        config['assemblies']+"/{sample}.fasta",
+    output:
+        directory("PSout/{sample}.out")
+    shell:
+        """
+        ~/Data/phylosift_v1.0.1/bin/phylosift search --debug --threads 64 --debug --isolate --besthit --output {output} {input}
+        ~/Data/phylosift_v1.0.1/bin/phylosift  align --debug --threads 64 --debug --isolate --besthit --output {output} {input}
+        """
+
+rule phylosift_process:
+    output:
+        "Phylosift.tree"
+    shell:
+        """
+        cat PSout/*/alignDir/concat.updated.1.fasta > concat_PS.fasta
+        perl -p -i -e "s/\.fasta.+//g" concat_PS.fasta
+        ~/Data/phylosift_v1.0.1/bin/FastTree -nt -gtr <concat_PS.fasta> Phylosift.tree
+        """

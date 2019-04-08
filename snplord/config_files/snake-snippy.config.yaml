@@ -1,0 +1,14 @@
+##Configuration file for snippy_snakemake
+#Path to read directory
+reads: /path/to/your/reads/folder
+#Path to reference fasta file. This can be the same as your reads folder or just a folder called 'ref' in your snplord folder.
+ref: ref
+#Gubbins params
+gubbins:
+ params: -f 25
+
+
+
+
+    
+

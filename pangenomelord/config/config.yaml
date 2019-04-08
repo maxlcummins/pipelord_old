@@ -1,0 +1,12 @@
+###Configuration for bwa_samtools workflow
+
+# path to reads
+assembly_path: /home/mlcummin/Data/Snakemake_Shovill/final_assemblies
+
+#path to output directory:
+output: /home/mlcummin/Data/pangenomelord/output
+
+# plasmidlord.py options
+bin_size: 250
+tick_size: 100
+

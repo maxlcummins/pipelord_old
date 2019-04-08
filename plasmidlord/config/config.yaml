@@ -1,0 +1,12 @@
+###Configuration for bwa_samtools workflow
+
+# path to reads
+read_path: /home/cjreid/Data/salad_ecoli/reads/pO111_screen
+
+#path to reference fasta
+ref_path: ref
+
+# plasmidlord.py options
+bin_size: 250
+tick_size: 100
+
