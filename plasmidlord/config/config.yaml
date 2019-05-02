@@ -1,10 +1,13 @@
 ###Configuration for bwa_samtools workflow
 
 # path to reads
-read_path: /home/cjreid/Data/salad_ecoli/reads/pO111_screen
+read_path: /home/mlcummin/Data/Snakemake_workflows/SRA_download/BIGSI
 
 #path to reference fasta
-ref_path: ref
+ref_path: /home/mlcummin/Data/plasmidlord/SGI1_variants
+
+#path to output
+output: /home/mlcummin/BIGSI_SGI1_analysis
 
 # plasmidlord.py options
 bin_size: 250
