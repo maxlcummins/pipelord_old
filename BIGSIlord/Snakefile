@@ -1,0 +1,63 @@
+import pandas as pd
+
+configfile:
+    "config_files/config.yaml"
+
+fasta, = glob_wildcards(config['fasta']+"/{reference}.fa")
+
+rule all:
+    input:
+        #expand(config['output']+"/intermediate_files/"+"{reference}.csv", reference=fasta)
+        #expand(config['output']+"/intermediate_files/{reference}_URLs.txt", reference=fasta)
+#        expand(config['output']+"/jsons/{reference}/BIGSI.json.dummy", reference=fasta)
+        expand(config['output']+"/csv/{reference}.dummy", reference=fasta)
+
+rule fasta_to_csvs:
+    input:
+        config['fasta']+"/{reference}.fa"
+    output:
+        config['output']+"/intermediate_files/{reference}.csv",
+        config['output']+"/intermediate_files/{reference}_URLs.txt"
+    conda:
+        "config_files/BIGSIlord.yaml"
+    shell:
+        """
+        python fasta2csv.py {input} {output[0]}
+        python fasta_url_base.py {input} {output[1]}
+        perl -p -i -e 's/.*_/CDS_/g' {output[1]}
+        """
+
+rule url_to_json:
+    input:
+        config['output']+"/intermediate_files/{reference}_URLs.txt"
+    output:
+        directory(config['output']+"/jsons/{reference}")
+    conda:
+        "config_files/BIGSIlord.yaml"
+    params:
+        ref = config['output']+"/jsons/{reference}"
+    shell:
+        """
+        mkdir -p {params.ref}
+        parallel -a {input} -j0 -C ", *" 'wget -q -O {{1}} {{2}}'
+        for f in CDS*; do mv $f {params.ref}/${{f}}.json; done
+        """
+
+
+rule json_multi:
+    input:
+        directory(config['output']+"/jsons/{reference}")
+    output:
+        config['output']+"/csv/{reference}.dummy"
+    conda:
+        "config_files/BIGSIlord.yaml"
+    params:
+        config['output']+"/jsons/"
+    shell:
+        """
+        touch {output}
+        python Convert_json.py {input} {wildcards.reference}
+        """
+
+
+
