@@ -1,0 +1,35 @@
+commit 316c24e23638378f263bc2c72302eb0387855b95
+Author: RolfKaas <rolkaas@gmail.com>
+Date:   Tue Dec 3 10:33:39 2019 +0100
+
+    Fix consistent case of Beta-lactam
+Using this git commit for resfinder database:
+Combining downloaded fasta files...
+    fusidicacid.fsa
+    phenicol.fsa
+    glycopeptide.fsa
+    trimethoprim.fsa
+    oxazolidinone.fsa
+    tetracycline.fsa
+    quinolone.fsa
+    nitroimidazole.fsa
+    fosfomycin.fsa
+    aminoglycoside.fsa
+    macrolide.fsa
+    sulphonamide.fsa
+    rifampicin.fsa
+    colistin.fsa
+    beta-lactam.fsa
+
+Finished combining files
+
+Finished. Final files are:
+	/data/mlcummin/pipelord/aribalord/data/databases/CGE/resfinder.fa
+	/data/mlcummin/pipelord/aribalord/data/databases/CGE/resfinder.tsv
+
+You can use them with ARIBA like this:
+ariba prepareref -f /data/mlcummin/pipelord/aribalord/data/databases/CGE/resfinder.fa -m /data/mlcummin/pipelord/aribalord/data/databases/CGE/resfinder.tsv output_directory
+
+If you use this downloaded data, please cite:
+"Identification of acquired antimicrobial resistance genes", Zankari et al 2012, PMID: 22782487
+

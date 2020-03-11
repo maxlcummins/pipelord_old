@@ -1,12 +1,6 @@
-###Configuration for bwa_samtools workflow
+###Configuration for pangenomelord
 
 # path to reads
-assembly_path: /home/mlcummin/Data/Snakemake_Shovill/final_assemblies
-
+assembly_path: /home/mlcummin/Data/Manuscripts/Kira_ColV/fastas_new
 #path to output directory:
-output: /home/mlcummin/Data/pangenomelord/output
-
-# plasmidlord.py options
-bin_size: 250
-tick_size: 100
-
+output: /home/mlcummin/Data/Manuscripts/Kira_ColV/output/pangenome_new

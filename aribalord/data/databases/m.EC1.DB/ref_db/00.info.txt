@@ -1,0 +1,9 @@
+input fasta file:	data/databases/m.EC1.DB/pubmlst_download/adk.tfa
+input fasta file:	data/databases/m.EC1.DB/pubmlst_download/fumC.tfa
+input fasta file:	data/databases/m.EC1.DB/pubmlst_download/gyrB.tfa
+input fasta file:	data/databases/m.EC1.DB/pubmlst_download/icd.tfa
+input fasta file:	data/databases/m.EC1.DB/pubmlst_download/mdh.tfa
+input fasta file:	data/databases/m.EC1.DB/pubmlst_download/purA.tfa
+input fasta file:	data/databases/m.EC1.DB/pubmlst_download/recA.tfa
+input tsv file:	data/databases/m.EC1.DB/ref_db/00.auto_metadata.tsv
+genetic_code	11

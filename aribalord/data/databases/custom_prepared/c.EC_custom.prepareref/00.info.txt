@@ -1,0 +1,3 @@
+input fasta file:	data/databases/custom/EC_custom.fa
+input tsv file:	data/databases/custom_prepared/c.EC_custom.prepareref/00.auto_metadata.tsv
+genetic_code	11

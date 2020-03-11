@@ -1,11 +1,9 @@
 ###Configuration for aribalord
 
 # path to output
-output: /home/mlcummin/Data/i3_genome_analysis/ariba
-
+output : /home/mlcummin/Data/Manuscripts/Femoral_Head_2019/output/ariba
 # path to reads
-read_path: /home/mlcummin/Data/i3_reads
-
+read_path : /home/mlcummin/Data/Manuscripts/Femoral_Head_2019/reads
 # standard gene databases to use for ariba
 gene_dbs: ['plasmidfinder', 'resfinder', 'virulencefinder']
 

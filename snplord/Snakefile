@@ -3,16 +3,16 @@ configfile:
 
 sample_ids, = glob_wildcards(config['reads']+"/{sample}.R1.fastq.gz")
 REF, = glob_wildcards(config['ref']+"/{reference}.fa")
-output_pre = re.sub('.*\/(.*)','\\1_output',config['reads'])
+output_pre = config['prefix']
 
 print(sample_ids,)
 print(REF,)
 
 rule all:
 	input:
-		expand("data/{output_prefix}/snippyout/{reference}/{sample}.out", sample=sample_ids, reference=REF, output_prefix = output_pre),		
-		expand("data/{output_prefix}/fasttree/{reference}.clean.fullcore.tree", reference=REF, output_prefix = output_pre),
-		expand("data/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv", reference=REF, output_prefix = output_pre)		
+		expand(config['outdir']+"/data/{output_prefix}/snippyout/{reference}/{sample}.out", sample=sample_ids, reference=REF, output_prefix = output_pre),		
+		expand(config['outdir']+"/data/{output_prefix}/fasttree/{reference}.clean.fullcore.tree", reference=REF, output_prefix = output_pre),
+		expand(config['outdir']+"/data/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv", reference=REF, output_prefix = output_pre)		
 
 rule snippy_run:
 	input:
@@ -20,7 +20,7 @@ rule snippy_run:
 		r1 = config['reads']+"/{sample}.R1.fastq.gz",
 		r2 = config['reads']+"/{sample}.R2.fastq.gz"
 	output: 
-		directory("data/{output_prefix}/snippyout/{reference}/{sample}.out")
+		directory(config['outdir']+"/data/{output_prefix}/snippyout/{reference}/{sample}.out")
 	conda: 
 		"config_files/snippy.yaml"
 	shell: 
@@ -31,19 +31,21 @@ rule snippy_core:
 	input:
 		ref = config['ref']+"/{reference}.fa",	
 	output:	
-		"data/{output_prefix}/core/{reference}.full.aln"
+		config['outdir']+"/data/{output_prefix}/core/{reference}.full.aln"
 	conda:
 		"config_files/snippy.yaml"
+	params:
+		out_dir = config['outdir']
 	shell:
 		"""
-		snippy-core --prefix data/{wildcards.output_prefix}/core/{wildcards.reference} --ref {input.ref} data/{wildcards.output_prefix}/snippyout/{wildcards.reference}/*.out
+		snippy-core --prefix {params.out_dir}/data/{wildcards.output_prefix}/core/{wildcards.reference} --ref {input.ref} {params.out_dir}/data/{wildcards.output_prefix}/snippyout/{wildcards.reference}/*.out
 		"""
 	
 rule snippy_clean:
 	input:
-		"data/{output_prefix}/core/{reference}.full.aln"
+		config['outdir']+"/data/{output_prefix}/core/{reference}.full.aln"
 	output:
-		"data/{output_prefix}/core/{reference}.clean.full.aln"
+		config['outdir']+"/data/{output_prefix}/core/{reference}.clean.full.aln"
 	conda: 
 		"config_files/snippy.yaml"	
 	shell:
@@ -51,11 +53,11 @@ rule snippy_clean:
 
 rule gubbins:
 	input:
-		"data/{output_prefix}/core/{reference}.clean.full.aln"
+		config['outdir']+"/data/{output_prefix}/core/{reference}.clean.full.aln"
 	output:
-		"data/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
+		config['outdir']+"/data/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
 	params:
-		prefix = "data/{output_prefix}/gubbins/{reference}",
+		prefix = config['outdir']+"/data/{output_prefix}/gubbins/{reference}",
 		filt = config["gubbins"]["params"]
 	conda:
 		"config_files/gubbins.yaml"
@@ -66,9 +68,9 @@ rule gubbins:
 		"""
 rule snp_sites:
 	input:
-		"data/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
+		config['outdir']+"/data/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
 	output:
-		"data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
+		config['outdir']+"/data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
 	conda: 
 		"config_files/snippy.yaml"
 	shell:
@@ -76,9 +78,9 @@ rule snp_sites:
 
 rule snp_dists:
 	input:
-		"data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
+		config['outdir']+"/data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
 	output:
-		"data/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv"
+		config['outdir']+"/data/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv"
 	conda: 
 		"config_files/snp_dists.yaml"
 	shell: 
@@ -86,16 +88,10 @@ rule snp_dists:
 
 rule fasttree:
 	input:
-		"data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
+		config['outdir']+"/data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
 	output:
-		"data/{output_prefix}/fasttree/{reference}.clean.fullcore.tree"
+		config['outdir']+"/data/{output_prefix}/fasttree/{reference}.clean.fullcore.tree"
 	conda:
 		"config_files/fasttree.yaml"
 	shell:
 		"fasttree -gtr -nt {input} > {output}"
-
-
-
-
-
-

@@ -1,0 +1,3 @@
+input fasta file:	data/databases/CGE/resfinder.fa
+input tsv file:	data/databases/CGE/resfinder.tsv
+genetic_code	11

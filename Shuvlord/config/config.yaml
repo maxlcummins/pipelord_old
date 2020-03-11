@@ -1,8 +1,8 @@
 ###Configuration file
 #
 ## path to reads
-reads: /home/mlcummin/Data/i3_reads
+reads : /home/mlcummin/Data/Manuscripts/Femoral_Head_2019/reads
 #
 ##path to output directory:
-output: /home/mlcummin/Data/i3_genome_analysis
+output : /home/mlcummin/Data/Manuscripts/Femoral_Head_2019/output/assemblies
 #

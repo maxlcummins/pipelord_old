@@ -1,0 +1,16 @@
+##Configuration file for abricatelord
+#Path to assemblies to be used in snippy. These must end in ".fasta"
+assemblies: /home/malcummi/Data/abricatelord/test_assemblies
+#Path to gene db location
+gene_db_location: /home/malcummi/Data/miniconda3/envs/abricate/db
+#Path to directory containing reference fasta file/s. This can be the same as your reads folder or just a folder called 'ref' in your snplord folder.
+#Note: Reference must be formatted to end in ".fa", not ".fasta", ".fsa" or anything else.
+gene_dbs: ['card', 'ecoli_vf', 'plasmidfinder', 'ecoh', 'ncbi', 'resfinder', 'vfdb', 'argannot', 'colV_zoetis']
+#Output directory path
+outdir: /home/malcummi/Data/abricatelord/
+#Output prefix
+prefix: Test1
+#minimum nucleotide ID (default for abricate is 75)
+minimum_id: 75
+#minimum coverage (default for abricate is 0)
+minimum_id: 0

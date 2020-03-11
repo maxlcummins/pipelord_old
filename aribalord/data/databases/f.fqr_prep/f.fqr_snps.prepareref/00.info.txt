@@ -1,0 +1,3 @@
+input fasta file:	data/databases/FQR/fqr_snps.fa
+input tsv file:	data/databases/f.fqr_prep/f.fqr_snps.prepareref/00.auto_metadata.tsv
+genetic_code	11

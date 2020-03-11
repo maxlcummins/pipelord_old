@@ -1,0 +1,29 @@
+commit dd58068a0a62e6b20e1a089a6fe2f495a4572512
+Author: Hkaya <kayah36@gmail.com>
+Date:   Fri Oct 25 09:43:24 2019 +0200
+
+    Fix double underscores and renamed one entry
+Using this git commit for plasmidfinder database:
+Combining downloaded fasta files...
+    RepA_N.fsa
+    enterobacteriaceae.fsa
+    Rep1.fsa
+    Rep2.fsa
+    Rep_trans.fsa
+    NT_Rep.fsa
+    Rep3.fsa
+    Inc18.fsa
+    RepL.fsa
+
+Finished combining files
+
+Finished. Final files are:
+	/data/mlcummin/pipelord/aribalord/data/databases/CGE/plasmidfinder.fa
+	/data/mlcummin/pipelord/aribalord/data/databases/CGE/plasmidfinder.tsv
+
+You can use them with ARIBA like this:
+ariba prepareref -f /data/mlcummin/pipelord/aribalord/data/databases/CGE/plasmidfinder.fa -m /data/mlcummin/pipelord/aribalord/data/databases/CGE/plasmidfinder.tsv output_directory
+
+If you use this downloaded data, please cite:
+"PlasmidFinder and pMLST: in silico detection and typing of plasmids", Carattoli et al 2014, PMID: 24777092
+

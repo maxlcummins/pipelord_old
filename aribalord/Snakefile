@@ -3,7 +3,7 @@ import subprocess
 import os
 
 configfile:
-	"config_files/config.yaml"
+    "config_files/config.yaml"
 
 #Get reads
 sample_ids, = glob_wildcards(config['read_path']+"/{sample}.R1.fastq.gz")
@@ -14,15 +14,15 @@ mlst_names = expand(config['mlst_names'])
 
 
 if os.path.isdir('data/databases/custom'):
-	print('Custom DBs already downloaded')
+    print('Custom DBs already downloaded')
 
-else:   	
-	subprocess.call("mkdir -p data/databases/custom", shell=True)
-    	subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/EC_custom.fa -O data/databases/custom/EC_custom.fa", shell=True)
-    	subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/E_coli_phylogroup.fa -O data/databases/custom/E_coli_phylogroup.fa", shell=True)
-	subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/srst2_EcOH.fa -O data/databases/custom/srst2_EcOH.fa", shell=True)
-	subprocess.call("mkdir -p data/databases/FQR", shell=True)
-	subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/fqr_snps.fa -O data/databases/FQR/fqr_snps.fa", shell=True)
+else:       
+    subprocess.call("mkdir -p data/databases/custom", shell=True)
+    subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/EC_custom.fa -O data/databases/custom/EC_custom.fa", shell=True)
+    subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/E_coli_phylogroup.fa -O data/databases/custom/E_coli_phylogroup.fa", shell=True)
+    subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/srst2_EcOH.fa -O data/databases/custom/srst2_EcOH.fa", shell=True)
+    subprocess.call("mkdir -p data/databases/FQR", shell=True)
+    subprocess.call("wget https://raw.githubusercontent.com/CJREID/custom_DBs/master/fqr_snps.fa -O data/databases/FQR/fqr_snps.fa", shell=True)
 
 custom_dbs, = glob_wildcards("data/databases/custom/{custom_db}.fa")
 
@@ -34,223 +34,219 @@ print(custom_dbs)
 
 #one rule to rule them all
 rule all:
-	input:
-		expand("data/databases/prepared/{gene_db}.prepareref", gene_db=gene_dbs),
-		expand("data/databases/m.{mlst_name}.DB", mlst_name=mlst_names),
-		expand("data/databases/custom_prepared/c.{custom_db}.prepareref", custom_db=custom_dbs),
-		expand("data/databases/f.fqr_prep/f.fqr_snps.prepareref"),
-		expand(config['output']+"/ariba_out/c.{custom_db}/{sample}.out", custom_db=custom_dbs, sample=sample_ids),
-		expand(config['output']+"/ariba_out/fqr_snps/{sample}.out", sample=sample_ids),		
-		expand(config['output']+"/ariba_out/s.{gene_db}/{sample}.out", gene_db=gene_dbs, sample=sample_ids),
-		expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out", mlst_name=mlst_names, sample=sample_ids),
-		expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids),
-		expand(config['output']+"/ariba_out/MLST_summary/{mlst_name}_MLST.tsv", mlst_name=mlst_names),
-		expand(config['output']+"/ariba_out/summaries/{gene_db}.csv", gene_db=gene_dbs),
-		expand(config['output']+"/ariba_out/custom_summaries/{custom_db}.csv", custom_db=custom_dbs),
-		config['output']+"/aribalord_in"
+    input:
+        expand("data/databases/prepared/{gene_db}.prepareref", gene_db=gene_dbs),
+        expand("data/databases/m.{mlst_name}.DB", mlst_name=mlst_names),
+        expand("data/databases/custom_prepared/c.{custom_db}.prepareref", custom_db=custom_dbs),
+        expand("data/databases/f.fqr_prep/f.fqr_snps.prepareref"),
+        expand(config['output']+"/ariba_out/c.{custom_db}/{sample}.out", custom_db=custom_dbs, sample=sample_ids),
+        expand(config['output']+"/ariba_out/fqr_snps/{sample}.out", sample=sample_ids),        
+        expand(config['output']+"/ariba_out/s.{gene_db}/{sample}.out", gene_db=gene_dbs, sample=sample_ids),
+        expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out", mlst_name=mlst_names, sample=sample_ids),
+        expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids),
+        expand(config['output']+"/ariba_out/MLST_summary/{mlst_name}_MLST.tsv", mlst_name=mlst_names),
+        expand(config['output']+"/ariba_out/summaries/{gene_db}.csv", gene_db=gene_dbs),
+        expand(config['output']+"/ariba_out/custom_summaries/{custom_db}.csv", custom_db=custom_dbs),
+        config['output']+"/aribalord_in"
 
 
 #Download and prepare the most recent versions of the gene DBs
 rule get_gene_dbs:
-	output:
-		db = "data/databases/CGE/{gene_db}.fa", 
-		meta = "data/databases/CGE/{gene_db}.tsv",
-		prep = directory("data/databases/prepared/{gene_db}.prepareref")
-	conda: 
-		"config_files/ariba_snake.yaml"
-	log:
-		"data/databases/logs/{gene_db}.access.log"
-	params:
-		prefix = "{gene_db}", gene_db=gene_dbs
-	priority: 10
-	shell:
-		"""
-		ariba getref {params.prefix} data/databases/CGE/{params.prefix} > {log}
-		ariba prepareref -f {output.db} -m {output.meta} {output.prep}
-		"""
+    output:
+        db = "data/databases/CGE/{gene_db}.fa", 
+        meta = "data/databases/CGE/{gene_db}.tsv",
+        prep = directory("data/databases/prepared/{gene_db}.prepareref")
+    conda: 
+        "config_files/ariba_snake.yaml"
+    log:
+        "data/databases/logs/{gene_db}.access.log"
+    params:
+        prefix = "{gene_db}", gene_db=gene_dbs
+    priority: 10
+    shell:
+        """
+        ariba getref {params.prefix} data/databases/CGE/{params.prefix} > {log}
+        ariba prepareref -f {output.db} -m {output.meta} {output.prep}
+        """
 
 #Get MLST schemes for ARIBA to use
 rule get_mlst:
-	output: 
-		directory("data/databases/m.{mlst_name}.DB")
-	conda:
-		"config_files/ariba_snake.yaml"	
-	params:
-		db = config['mlst_dbs']
-	priority: 10
-	shell:
-		"""
-		ariba pubmlstget "{params.db}" {output}
-		"""
+    output: 
+        directory("data/databases/m.{mlst_name}.DB")
+    conda:
+        "config_files/ariba_snake.yaml"    
+    params:
+        db = config['mlst_dbs']
+    priority: 10
+    shell:
+        """
+        ariba pubmlstget "{params.db}" {output}
+        """
 
 rule prep_fqr:
-	input: 
-		"data/databases/FQR/fqr_snps.fa"
-	output: 
-		directory("data/databases/f.fqr_prep/f.fqr_snps.prepareref")
-	conda:
-		"config_files/ariba_snake.yaml"
-	priority: 10
-	shell:
-		"""
-		ariba prepareref --all_coding yes -f {input} {output}
-		"""
+    input: 
+        "data/databases/FQR/fqr_snps.fa"
+    output: 
+        directory("data/databases/f.fqr_prep/f.fqr_snps.prepareref")
+    conda:
+        "config_files/ariba_snake.yaml"
+    priority: 10
+    shell:
+        """
+        ariba prepareref --all_coding yes -f {input} {output}
+        """
 
 
 #Custom DBs. Need to be able to take either a URL for download or a path to a fasta file
 #then potentially invoke different rules based on different inputs from the config file
 
 if os.path.isdir('data/databases/custom_prepared'):
-	print('Custom DBs already prepared')
+    print('Custom DBs already prepared')
 else:
 
-	rule prep_custom:
-		input:
-			"data/databases/custom/{custom_db}.fa"
-		output:
-			directory("data/databases/custom_prepared/c.{custom_db}.prepareref")
-		conda: 
-			"config_files/ariba_snake.yaml"
-		priority: 10
-		shell:
-			"""
-			ariba prepareref --all_coding no -f {input} {output}
-			"""
+    rule prep_custom:
+        input:
+            "data/databases/custom/{custom_db}.fa"
+        output:
+            directory("data/databases/custom_prepared/c.{custom_db}.prepareref")
+        conda: 
+            "config_files/ariba_snake.yaml"
+        priority: 10
+        shell:
+            """
+            ariba prepareref --all_coding no -f {input} {output}
+            """
 
 rule run_custom:
-	input:
-		db = "data/databases/custom_prepared/c.{custom_db}.prepareref",
-	   	r1 = config['read_path']+"/{sample}.R1.fastq.gz",
-	    	r2 = config['read_path']+"/{sample}.R2.fastq.gz"
-	output:
-		directory(config['output']+"/ariba_out/c.{custom_db}/{sample}.out")
-	conda:
-		"config_files/ariba_snake.yaml"
-	priority: 9
-	shell:
-        	"""
-		ariba run --threads 100 --noclean {input.db} {input.r1} {input.r2} {output}
-		"""
+    input:
+        db = "data/databases/custom_prepared/c.{custom_db}.prepareref",
+        r1 = config['read_path']+"/{sample}.R1.fastq.gz",
+        r2 = config['read_path']+"/{sample}.R2.fastq.gz"
+    output:
+        directory(config['output']+"/ariba_out/c.{custom_db}/{sample}.out")
+    conda:
+        "config_files/ariba_snake.yaml"
+    priority: 9
+    shell:
+            """
+        ariba run --threads 100 --noclean {input.db} {input.r1} {input.r2} {output}
+        """
 
 rule run_fqr:
-	input:
-		db = "data/databases/f.fqr_prep/f.fqr_snps.prepareref",
-	   	r1 = config['read_path']+"/{sample}.R1.fastq.gz",
-	    	r2 = config['read_path']+"/{sample}.R2.fastq.gz"
-	output:
-		directory(config['output']+"/ariba_out/fqr_snps/{sample}.out")
-	conda:
-		"config_files/ariba_snake.yaml"
-	priority: 9
-	shell:
-        	"""
-		ariba run --threads 100 --noclean {input.db} {input.r1} {input.r2} {output}
-		"""
+    input:
+        db = "data/databases/f.fqr_prep/f.fqr_snps.prepareref",
+        r1 = config['read_path']+"/{sample}.R1.fastq.gz",
+        r2 = config['read_path']+"/{sample}.R2.fastq.gz"
+    output:
+        directory(config['output']+"/ariba_out/fqr_snps/{sample}.out")
+    conda:
+        "config_files/ariba_snake.yaml"
+    priority: 9
+    shell:
+            """
+        ariba run --threads 100 --noclean {input.db} {input.r1} {input.r2} {output}
+        """
 
 rule run_standard:
-	input:
-		db = "data/databases/prepared/{gene_db}.prepareref",
-	   	r1 = config['read_path']+"/{sample}.R1.fastq.gz",
-	    	r2 = config['read_path']+"/{sample}.R2.fastq.gz"
-	output:
-		directory(config['output']+"/ariba_out/s.{gene_db}/{sample}.out")
-	conda:
-		"config_files/ariba_snake.yaml"
-	priority: 9
-	shell:
-        	"""
-		ariba run --threads 100 --noclean {input.db} {input.r1} {input.r2} {output}
-		"""
+    input:
+        db = "data/databases/prepared/{gene_db}.prepareref",
+        r1 = config['read_path']+"/{sample}.R1.fastq.gz",
+        r2 = config['read_path']+"/{sample}.R2.fastq.gz"
+    output:
+        directory(config['output']+"/ariba_out/s.{gene_db}/{sample}.out")
+    conda:
+        "config_files/ariba_snake.yaml"
+    priority: 9
+    shell:
+            """
+        ariba run --threads 100 --noclean {input.db} {input.r1} {input.r2} {output}
+        """
 
 rule run_mlst:
-	input:
-		db = "data/databases/m.{mlst_name}.DB",
-		r1 = config['read_path']+"/{sample}.R1.fastq.gz",
-	    	r2 = config['read_path']+"/{sample}.R2.fastq.gz"
-	output:
-		directory(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out")
-	conda:
-		"config_files/ariba_snake.yaml"
-	priority: 9
-	shell:
-		"""
-		ariba run --noclean {input.db}/ref_db {input.r1} {input.r2} {output}
-		"""
+    input:
+        db = "data/databases/m.{mlst_name}.DB",
+        r1 = config['read_path']+"/{sample}.R1.fastq.gz",
+        r2 = config['read_path']+"/{sample}.R2.fastq.gz"
+    output:
+        directory(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out")
+    conda:
+        "config_files/ariba_snake.yaml"
+    priority: 9
+    shell:
+        """
+        ariba run --noclean {input.db}/ref_db {input.r1} {input.r2} {output}
+        """
 
 rule mlst_names:
-	input:
-		config['output']+"/ariba_out/m.{mlst_name}/{sample}.out"
-	output:
-		config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv"
-	priority: 8
-	shell:
-		"""
-		for f in {input} ; do sed 's@$@\\t{wildcards.sample}@' ${{f}}/mlst_report.tsv > {output} ; done
-		"""
+    input:
+        config['output']+"/ariba_out/m.{mlst_name}/{sample}.out"
+    output:
+        config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv"
+    priority: 8
+    shell:
+        """
+        for f in {input} ; do sed 's@$@\\t{wildcards.sample}@' ${{f}}/mlst_report.tsv > {output} ; done
+        """
 
 rule mlst_cat:
-	input:
-		expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids)
-	output:
-		config['output']+"/ariba_out/MLST_summary/{mlst_name}_MLST.tsv"
-	priority: 8
-	shell:
-		"""
-		cat {input} > {output}
-		sed -i -E '1 ! s/^ST.*//' {output}
-		sed -i '/^$/d' {output}
-		"""
+    input:
+        expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids)
+    output:
+        config['output']+"/ariba_out/MLST_summary/{mlst_name}_MLST.tsv"
+    priority: 8
+    shell:
+        """
+        cat {input} > {output}
+        sed -i -E '1 ! s/^ST.*//' {output}
+        sed -i '/^$/d' {output}
+        """
 
 rule standard_summary:
-	output:
-		config['output']+"/ariba_out/summaries/{gene_db}.csv"
-	conda:
-		"config_files/ariba_snake.yaml"
-	params:
-		outdir=config['output']+"/ariba_out/s.{gene_db}/*/report.tsv",
-		db = "ariba_out/summaries/{gene_db}"
-	priority: 8
-	shell:
-		"""
-		ariba summary --no_tree --cluster_cols assembled,ref_seq {params.db} {params.outdir}
-		rm ariba_out/summaries/*phandango*
-		"""
+    output:
+        config['output']+"/ariba_out/summaries/{gene_db}.csv"
+    conda:
+        "config_files/ariba_snake.yaml"
+    params:
+        outdir=config['output']+"/ariba_out/s.{gene_db}/*/report.tsv",
+        db = config['output']+"/ariba_out/summaries/{gene_db}",
+        out = config['output']
+    priority: 8
+    shell:
+        """
+        ariba summary --no_tree --cluster_cols assembled,ref_seq {params.db} {params.outdir}
+        rm {params.out}/ariba_out/summaries/*phandango*
+        """
 
 rule custom_summary:
-	output:
-		config['output']+"/ariba_out/custom_summaries/{custom_db}.csv"
-	conda:
-		"config_files/ariba_snake.yaml"
-	params:
-		outdir=config['output']+"/ariba_out/c.{custom_db}/*/report.tsv",
-		db = "ariba_out/custom_summaries/{custom_db}"
-	priority: 8
-	shell:
-		"""
-		ariba summary --no_tree --cluster_cols assembled,ref_seq {params.db} {params.outdir}
-		rm ariba_out/custom_summaries/*phandango*
-		"""
+    output:
+        config['output']+"/ariba_out/custom_summaries/{custom_db}.csv"
+    conda:
+        "config_files/ariba_snake.yaml"
+    params:
+        outdir=config['output']+"/ariba_out/c.{custom_db}/*/report.tsv",
+        db = config['output']+"/ariba_out/custom_summaries/{custom_db}",
+        out = config['output']
+    priority: 8
+    shell:
+        """
+        ariba summary --no_tree --cluster_cols assembled,ref_seq {params.db} {params.outdir}
+        rm {params.out}/ariba_out/custom_summaries/*phandango*
+        """
 
 
 rule clean:
-	output:
-		directory(config['output']+"/aribalord_in")
-	priority: 1
-	shell:
-		"""		
-		for f in ariba_out/summaries/*.csv; do sed -i -E 's@\.out.*report.tsv@@g' ${{f}}; sed -i -E 's@ariba_out/[^\/]+/@@g' ${{f}} ; done
-		for f in ariba_out/custom_summaries/*.csv; do sed -i -E 's@\.out.*report.tsv@@g' ${{f}}; sed -i -E 's@ariba_out/[^\/]+/@@g' ${{f}} ; done
-		for f in ariba_out/custom_summaries/*.csv; do sed -i -E 's@\.out.*report.tsv@@g' ${{f}}; sed -i -E 's@ariba_out/[^\/]+/@@g' ${{f}} ; done
-		mkdir {output}        
-		cp ariba_out/summaries/*.csv {output}
-		cp ariba_out/MLST_summary/*_MLST.tsv {output}
-		cp ariba_out/custom_summaries/*.csv {output}
-		"""
-
-
-
-
-
-
-
-
+    output:
+        directory(config['output']+"/aribalord_in")
+    priority: 1
+    params:
+        out = config['output']
+    shell:
+        """        
+        for f in {params.out}/ariba_out/summaries/*.csv; do sed -i -E 's@\.out.*report.tsv@@g' ${{f}}; sed -i -E 's@{params.out}/ariba_out/[^\/]+/@@g' ${{f}} ; done
+        for f in {params.out}/ariba_out/custom_summaries/*.csv; do sed -i -E 's@\.out.*report.tsv@@g' ${{f}}; sed -i -E 's@{params.out}/ariba_out/[^\/]+/@@g' ${{f}} ; done
+        for f in {params.out}/ariba_out/custom_summaries/*.csv; do sed -i -E 's@\.out.*report.tsv@@g' ${{f}}; sed -i -E 's@{params.out}/ariba_out/[^\/]+/@@g' ${{f}} ; done
+        mkdir {output}        
+        cp {params.out}/ariba_out/summaries/*.csv {output}
+        cp {params.out}/ariba_out/MLST_summary/*_MLST.tsv {output}
+        cp {params.out}/ariba_out/custom_summaries/*.csv {output}
+        """

@@ -1,0 +1,27 @@
+commit 13d72a837b3c0f9e62028b60eb8da0f8f28723c1
+Author: alffdtu <alff@food.dtu.dk>
+Date:   Mon Sep 30 16:28:20 2019 +0200
+
+    Added new genes to listeria from MyDbFinder db
+Using this git commit for virulencefinder database:
+Combining downloaded fasta files...
+    s.aureus_toxin.fsa
+    virulence_ecoli.fsa
+    listeria.fsa
+    s.aureus_hostimm.fsa
+    stx.fsa
+    s.aureus_exoenzyme.fsa
+    virulence_ent.fsa
+
+Finished combining files
+
+Finished. Final files are:
+	/data/mlcummin/pipelord/aribalord/data/databases/CGE/virulencefinder.fa
+	/data/mlcummin/pipelord/aribalord/data/databases/CGE/virulencefinder.tsv
+
+You can use them with ARIBA like this:
+ariba prepareref -f /data/mlcummin/pipelord/aribalord/data/databases/CGE/virulencefinder.fa -m /data/mlcummin/pipelord/aribalord/data/databases/CGE/virulencefinder.tsv output_directory
+
+If you use this downloaded data, please cite:
+"Real-time whole-genome sequencing for routine typing, surveillance, and outbreak detection of verotoxigenic Escherichia coli", Joensen al 2014, PMID: 24574290
+

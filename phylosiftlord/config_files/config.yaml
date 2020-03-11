@@ -1,6 +1,9 @@
 
 # path to assemblies
-assemblies: /home/Data/salad_ecoli/assemblies
+assemblies: /home/malcummi/Data/Manuscripts/Femoral_Head_2019/output/assemblies/final_assemblies
+
+#path for output
+output : /home/malcummi/Data/Manuscripts/Femoral_Head_2019/output/phylosift
 
 #path to phylosift
-phylosift: /home/phylosift_v1.0.1
+phylosift: /home/malcummi/Data/PhyloSift

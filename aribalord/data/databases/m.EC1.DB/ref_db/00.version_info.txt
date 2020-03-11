@@ -1,0 +1,5 @@
+ARIBA run with this command:
+/data/mlcummin/pipelord/aribalord/.snakemake/conda/bf448b9d/bin/ariba prepareref pubmlstget Escherichia coli#1 data/databases/m.EC1.DB
+from this directory: /data/mlcummin/pipelord/aribalord
+
+

@@ -1,0 +1,53 @@
+import re
+import os
+import pandas as pd
+
+#open config file from pwd: config.yaml
+configfile: "config_files/config.yaml"
+
+#pull names of files generated in set-up step that contain filenames of reads, gene databases and mlst databases
+file = config["sample_ids"]
+
+SRA_nums = pd.read_csv(file, header=0).T.squeeze()
+
+
+#strip filename suffixes from reads and databases
+#convert from dataframes to pandas series object type (.T.squeeze())
+
+print(SRA_nums)
+
+rule all:
+	input:
+		expand(config['output']+"/{SRA_num}.R1.fastq.gz", SRA_num=SRA_nums),
+		expand(config['output']+"/{SRA_num}.R2.fastq.gz", SRA_num=SRA_nums)
+
+rule download_sra:
+	output:
+		config['output']+"/{SRA_num}_pass_1.fastq.gz",
+		config['output']+"/{SRA_num}_pass_2.fastq.gz"
+	conda:
+		"config_files/parallel-fastq-dump.yaml"
+	#params:
+	params:
+        	id = "{SRA_num}",
+		out = config['output']
+	shell:
+		"parallel-fastq-dump --gzip --skip-technical --read-filter pass --dumpbase --split-files --clip --outdir {params.out} --sra-id {params.id} --threads 8"
+
+rule rename:
+	input:
+		config['output']+"/{SRA_num}_pass_1.fastq.gz",
+		config['output']+"/{SRA_num}_pass_2.fastq.gz"
+	output:
+		config['output']+"/{SRA_num}.R1.fastq.gz",
+		config['output']+"/{SRA_num}.R2.fastq.gz"
+	shell:
+		"mv {input[0]} {output[0]}; mv {input[1]} {output[1]}"
+
+
+
+
+
+
+
+

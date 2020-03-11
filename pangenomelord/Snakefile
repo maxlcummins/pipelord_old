@@ -10,34 +10,44 @@ print(sample_ids)
 
 rule all:
 	input:
-		expand(config['output']+"/prokka/gffs/{sample}.gff", sample=sample_ids),
+		expand(config['output']+"/gffs/{sample}.gff", sample=sample_ids),
 		config['output']+"/Roary.out"
 
 rule prokka:
 	input:
 		config['assembly_path']+"/{sample}.fasta"
 	output:
-		config['output']+"/prokka/gffs/{sample}.gff"
+		config['output']+"/gffs/{sample}.gff"
 	conda:
 		"config/prokka.yaml"
 	log:
 		config['output']+"/prokka/logs/{sample}.log"
+	params:
+		out = config['output']
 	threads:
 		16
 	shell:
 		"""
-		prokka --genus Escherichia --usegenus --cpus 0 --outdir prokka/{wildcards.sample}.out {input}
-		cp prokka/{wildcards.sample}.out/*.gff {output}
+		prokka --cpus 5 --usegenus --genus Escherichia --outdir {params.out}/{wildcards.sample}.out {input}
+		cp {params.out}/{wildcards.sample}.out/*.gff {output}
 		"""
 
 rule roary:
 	input:
-		expand(config['output']+"/prokka/gffs/{sample}.gff", sample=sample_ids)
+		expand(config['output']+"/gffs/{sample}.gff", sample=sample_ids)
 	output:
-		config['output']+"/Roary.out"
+		directory(config['output']+"/Roary.out")
 	conda:
 		"config/roary.yaml"
 	log:
-		config['output']+"/roary/logs/roary.log"
+		"roary/logs/roary.log"
+	params:
+		out = config['output']
 	shell:
-		"roary -p 16 -f Roary.out {input}"
+		"roary -p 16 -f {params.out}/Roary.out {input}"
+
+
+
+
+
+
