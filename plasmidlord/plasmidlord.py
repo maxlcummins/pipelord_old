@@ -64,10 +64,12 @@ def get_block_medians(glob_path, step_size):
         data = pd.read_csv(fn, delimiter='\t', names=['_', 'x', 'depth'])
         data = data.as_matrix()[:, 1:]
         for row in data:
-            if row[1] >= 10 and row[1] < 20:
-                row[1] = 0.5
+            if  row[1] < 10:
+                row[1] = 0
             elif row[1] >= 20:
                 row[1] = 1
+            else:
+                row[1] = 0.5
         m, b = binning(data, step_size)
         meds.append(m)
         bins.append(b)
