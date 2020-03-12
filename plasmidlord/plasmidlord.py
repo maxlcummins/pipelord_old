@@ -68,6 +68,8 @@ def get_block_medians(glob_path, step_size):
                 row[1] = 0.5
             elif row[1] >= 20:
                 row[1] = 1
+            elif row[1] < 10:
+                row[1] = 0
         m, b = binning(data, step_size)
         meds.append(m)
         bins.append(b)
