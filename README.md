@@ -4,5 +4,24 @@ This repository contains a number of Snakemake pipelines that can be used for co
 ## abricatelord
 [Abricate](https://github.com/tseemann/abricate) is a tool developed by Torsten Seeman for the genotyping of genomic datasets.
 
+The tool is unpublished so there is no paper to cite, but if you use it for any manuscripts make sure you link the Github repo in your methodology. Also ensure you cite/provide access to any databases you use.
+
 You can use abricate to screen for genes of interest from commonly used publically available databases (see the abricate readme for supported databases), or you can create custom databases. Note that it screens assemblies (i.e. fasta files) and not read sets (i.e. fastq files). If you want to screen read sets (such as for screening of genes that typically are less well detected using assembly based screening tools like IS elements) use ARIBA instead.
 
+abricatelord can be used to streamline and parallelise the genotyping of collections of samples with multiple databases at the same time. It outputs individual abricate reports which currently require manual concatenation (using cat) or summary using (abricate --summary; see abricate wiki for details), though we will soon impliment a summary step in the Snakefile.
+
+## aribalord
+Antimicrobial Resistance Identification By Assembly-[ARIBA](https://github.com/sanger-pathogens/ariba) is a tool developed by Martin Hunt et al from the Sanger Institute which can be used for the genotyping of genomic datasets.
+
+This tool is published - cite it appropriately. Also ensure you cite/provide access to any databases you use.
+
+Similarly to abricate, you can use ARIBA to screen for the presence of genes of interest. ARIBA also integrates certain public databases and allows the use of custom databases. It is more computationally intensive than abricate is, so will take longer to run, but it can be performed on read sets rather than genomic assemblies and therefore does not necessitate genomic assembly prior to genotyping. It is also useful for identification of IS elements which don't tend to assemble very well (in our experience IS carriage is higher as determined by ARIBA in comparison with abricate and other BLAST based genotyping tools).
+
+aribalord can be used to streamline and parallelise the genotyping of collections of samples with multiple databases at the same time. It outputs multiple ariba summary reports which can be combined using a python script inconveniently also . 
+
+## BIGSIlord
+BItsliced Genomic Signature Index [BIGSI](http://www.bigsi.io/) is a tool developed by Phelim Bradley et al for the screening of genomic datasets from the Sequence Read Archive [SRA](https://www.ncbi.nlm.nih.gov/sra) for query sequences of interest.
+
+This tool is published - cite it appropriately. Also ensure you cite/provide access to any reference sequences you use.
+
+BIGSIlord can be used to streamline and parallelise the searching of massive online databases for sequences of interest. Multiple sequence can be queried at once, and the output of BIGSIlord consists of a text file containing a list of accession numbers and their associated species identifications. This text file can then be fed into SRAlord to allow the downloading of the associated genomic datasets.
