@@ -24,6 +24,7 @@ rule index_ref:
     output:
         config['ref_path']+"/{reference}.fa.amb"
     priority: 10
+    threads : snakemake.utils.available_cpu_count()
     conda:
         "config/plasmidlord.yaml"
     shell:
@@ -67,6 +68,7 @@ rule heatmap:
         tick = config['tick_size'],
         out = config['output']
     priority: 0
+    threads : snakemake.utils.available_cpu_count()
     shell:
         "python2 plasmidlord.py -b {params.bins} -t {params.tick} {params.out}/Coverage_files/{wildcards.reference} {params.out}/{wildcards.reference}"
 
