@@ -1,7 +1,7 @@
 # Pipelord
 This repository contains a number of Snakemake pipelines that can be used for common bacterial genomic analyses workflows performed in the Djordjevic Genomics lab.
 
-## abricatelord
+## abricate and abricatelord
 [Abricate](https://github.com/tseemann/abricate) is a tool developed by Torsten Seeman for the genotyping of genomic datasets.
 
 The tool is unpublished so there is no paper to cite, but if you use it for any manuscripts make sure you link the Github repo in your methodology. Also ensure you cite/provide access to any databases you use.
@@ -19,9 +19,18 @@ Similarly to abricate, you can use ARIBA to screen for the presence of genes of 
 
 aribalord can be used to streamline and parallelise the genotyping of collections of samples with multiple databases at the same time. It outputs multiple ariba summary reports which can be combined using a python script inconveniently also . 
 
-## BIGSIlord
+## BIGSI and BIGSIlord
 BItsliced Genomic Signature Index [BIGSI](http://www.bigsi.io/) is a tool developed by Phelim Bradley et al for the screening of genomic datasets from the Sequence Read Archive [SRA](https://www.ncbi.nlm.nih.gov/sra) for query sequences of interest.
 
 This tool is published - cite it appropriately. Also ensure you cite/provide access to any reference sequences you use.
 
 BIGSIlord can be used to streamline and parallelise the searching of massive online databases for sequences of interest. Multiple sequence can be queried at once, and the output of BIGSIlord consists of a text file containing a list of accession numbers and their associated species identifications. This text file can then be fed into SRAlord to allow the downloading of the associated genomic datasets.
+
+## BLASTn and BLASTlord
+BLASTn is one of the most widely used sequence alignment tools available and has been around for decades. It has many uses but primarily we use it for genotyping of genomic datasets. There are command line versions of BLAST, as well as GUI based ones. BLASTn is for nucleotide sequence alignments, while BLASTp is used for amino acid sequence alignment. There are other types of BLAST also. You can find the online BLAST portal [here](https://blast.ncbi.nlm.nih.gov/Blast.cgi), while the BLAST command line can be found (here)[https://www.ncbi.nlm.nih.gov/books/NBK279690/].
+
+This tool is published - cite it appropriately. Some believe BLAST doesnt need to be cited because it is so well known - I feel it should be cited. Also ensure you cite/provide access to any reference sequences you use.
+
+Confusingly, maxlcummins has written two different tools with the same name. BLASTlord within this repo refers to a Snakefile that allows you to run BLAST on lots of samples with lots of different databases in a lazy fashion. There is also an R package called [BLASTlord](https://github.com/maxlcummins/BLASTlord) which predates this repo by several years. Names will be changed to avoid confusion - I am thinking BLASTlordR for the R package. Apologies for this.
+
+
