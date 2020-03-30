@@ -31,6 +31,8 @@ BLASTn is one of the most widely used sequence alignment tools available and has
 
 This tool is published - cite it appropriately. Some believe BLAST doesnt need to be cited because it is so well known - I feel it should be cited. Also ensure you cite/provide access to any reference sequences you use.
 
-Confusingly, maxlcummins has written two different tools with the same name. BLASTlord within this repo refers to a Snakefile that allows you to run BLAST on lots of samples with lots of different databases in a lazy fashion. There is also an R package called [BLASTlord](https://github.com/maxlcummins/BLASTlord) which predates this repo by several years. Names will be changed to avoid confusion - I am thinking BLASTlordR for the R package. Apologies for this.
+BLASTlord within this repo refers to a Snakefile that allows you to run BLAST on lots of samples with lots of different databases in a lazy fashion. It generates a text file for each of the reference databases used which are named according to the names of the databases.
+
+**Note: Confusingly, maxlcummins has written two different tools with the same name. There is also an R package called [BLASTlord](https://github.com/maxlcummins/BLASTlord) which predates this repo by several years. Names will be changed to avoid confusion - I am thinking BLASTlordR for the R package. Apologies for this.**
 
 
