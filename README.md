@@ -36,3 +36,8 @@ BLASTlord within this repo refers to a Snakefile that allows you to run BLAST on
 **Note: Confusingly, maxlcummins has written two different tools with the same name. There is also an R package called [BLASTlord](https://github.com/maxlcummins/BLASTlord) which predates this repo by several years. Names will be changed to avoid confusion - I am thinking BLASTlordR for the R package. Apologies for this.**
 
 
+## Authorship
+[Max Cummins](https://github.com/maxlcummins/), [Cameron Reid](https://github.com/cjreid)
+
+## Acknowledgements
+[Dmitriy Li](https://github.com/Tu6ka)
