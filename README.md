@@ -1,7 +1,9 @@
 # Pipelord
 This repository contains a number of Snakemake pipelines that can be used for common bacterial genomic analyses workflows performed in the Djordjevic Genomics lab.
 
-## Help
+If you need to learn about Snakemake installation and usage please check the documentation [here](https://snakemake.readthedocs.io/en/stable/).
+
+## Troubleshooting and FAQ
 If you have any difficulty with these workflows please click the issues tab on this repo and file an issue report with as much detail as you think might be necessary for us to help troubleshoot things. If you think you know a fix for the issue then please include this. Please make sure that nobody has filed an issue regarding the same issue that you have encountered prior to posting a new one.
 
 ## abricate and abricatelord
