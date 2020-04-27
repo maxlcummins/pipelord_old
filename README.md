@@ -6,6 +6,21 @@ If you need to learn about Snakemake installation and usage please check the doc
 ## Troubleshooting and FAQ
 If you have any difficulty with these workflows please click the issues tab on this repo and file an issue report with as much detail as you think might be necessary for us to help troubleshoot things. If you think you know a fix for the issue then please include this. Please make sure that nobody has filed an issue regarding the same issue that you have encountered prior to posting a new one.
 
+## Will it -j?
+If you know, you know. Currentlt, builds of Snakemake pipelines that are '-j'able include:
+| First Header  | Second Header |
+| ------------- | ------------- |
+|  abricatelord  | Content Cell  |
+|  aribalord  | Content Cell  |
+|  ContentCell  | Content Cell  |
+|  ContentCell  | Content Cell  |
+|  ContentCell  | Content Cell  |
+|  ContentCell  | Content Cell  |
+|  ContentCell  | Content Cell  |
+
+
+
+
 ## abricate and abricatelord
 [Abricate](https://github.com/tseemann/abricate) is a tool developed by Torsten Seeman for the genotyping of genomic datasets.
 
