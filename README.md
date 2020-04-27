@@ -10,16 +10,16 @@ If you have any difficulty with these workflows please click the issues tab on t
 If you know, you know. Currentlt, builds of Snakemake pipelines that are '-j'able include:
 | First Header  | Second Header |
 | ------------- | ------------- |
-|  abricatelord  | &#9745 |
-|  aribalord  | - [ ]  |
-|  BISGIlord  | - [ ]  |
-|  BLASTlord  | - [ ]  |
-|  pangenomelord  | - [ ]  |
-|  phylosiftlord  | - [ ]  |
-|  plasmidlord  | - [ ]  |
-|  shuvlord  | - [x]  |
-|  snplord  | - [ ]  |
-|  SRAlord  | - [ ]  |
+|  abricatelord  | |
+|  aribalord  | |
+|  BISGIlord  | |
+|  BLASTlord  | |
+|  pangenomelord  | |
+|  phylosiftlord  | |
+|  plasmidlord  | |
+|  shuvlord  |&#9745;|
+|  snplord  | |
+|  SRAlord  | |
 
 
 
