@@ -8,7 +8,7 @@ If you have any difficulty with these workflows please click the issues tab on t
 
 ## Will it -j?
 If you know, you know. Currentlt, builds of Snakemake pipelines that are '-j'able include:
-| First Header  | Second Header |
+| Name  | -j status |
 | ------------- | ------------- |
 |  abricatelord  ||
 |  aribalord  ||
