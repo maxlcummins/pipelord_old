@@ -7,7 +7,7 @@ If you need to learn about Snakemake installation and usage please check the doc
 If you have any difficulty with these workflows please click the issues tab on this repo and file an issue report with as much detail as you think might be necessary for us to help troubleshoot things. If you think you know a fix for the issue then please include this. Please make sure that nobody has filed an issue regarding the same issue that you have encountered prior to posting a new one.
 
 ## Will it -j?
-If you know, you know. Currentlt, builds of Snakemake pipelines that are '-j'able include:
+If you know, you know. Currently, builds of Snakemake pipelines that are '-j'able include:
 | Name  | -j status |
 | ------------- | ------------- |
 |  abricatelord  ||
@@ -21,8 +21,7 @@ If you know, you know. Currentlt, builds of Snakemake pipelines that are '-j'abl
 |  snplord  ||
 |  SRAlord  ||
 
-
-
+If you find one of the above pipelines to be happy to be -j'd then please post in the [issues tab](https://github.com/maxlcummins/pipelord/issues) above mentioning which one it is and we will update this wiki.
 
 ## abricate and abricatelord
 [Abricate](https://github.com/tseemann/abricate) is a tool developed by Torsten Seeman for the genotyping of genomic datasets.
