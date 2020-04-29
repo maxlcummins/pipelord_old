@@ -10,14 +10,14 @@ If you have any difficulty with these workflows please click the issues tab on t
 If you know, you know. Currently, builds of Snakemake pipelines that are '-j'able include:
 | Name  | -j status |
 | ------------- | ------------- |
-|  abricatelord  ||
+|  abricatelord  |&#9745;|
 |  aribalord  ||
 |  BISGIlord  ||
 |  BLASTlord  ||
 |  pangenomelord  ||
 |  phylosiftlord  ||
 |  plasmidlord  ||
-|  shuvlord  |&#9745;|
+|  shuvlord  ||
 |  snplord  ||
 |  SRAlord  ||
 
