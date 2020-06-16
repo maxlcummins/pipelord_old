@@ -1,6 +1,18 @@
 ###Configuration for pangenomelord
 
-# path to reads
-assembly_path: /home/mlcummin/Data/Manuscripts/Kira_ColV/fastas_new
-#path to output directory:
-output: /home/mlcummin/Data/Manuscripts/Kira_ColV/output/pangenome_new
+    # path to reads
+assembly_path: /home/malcummi/Data/Manuscripts/Salmonella_AMR/Agona_assemblies/Agona_200
+    #path to output directory:
+output: /home/malcummi/Data/Manuscripts/Salmonella_AMR/Agona_assemblies/Agona_200/pangenomelord
+    # Use genus if you have a collection all of the same genus.
+    # If you want to use genus unhash the usegenus and genus lines immediately below. 
+    # Make sure you also hash the second instance of usegenus and genus below so there is only one value for each in this script.
+    # Also make sure to replace the genus appropriately
+    #usegenus: '--usegenus --genus '
+#genus: 'Salmonella'
+    # Use genus if you have a collection all of the same genus.
+usegenus: ' '
+genus: ' '
+    #Here you should configure the max number of threads so that we can parallelize with '-j'. You should know how many CPUs you have on the cluster you are working on.
+    #If you do not you can exit this and type the command 'lscpus' or check at https://ihpc.research.uts.edu.au/pages/about/hardware
+max_threads: 36
