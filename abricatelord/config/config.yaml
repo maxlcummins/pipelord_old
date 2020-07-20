@@ -1,15 +1,15 @@
 ##Configuration file for abricatelord
-#Path to assemblies to be used in snippy. These must end in ".fasta"
-assemblies: /home/malcummi/Data/Manuscripts/ST117_2020/assemblies
+#Path to assemblies to be screened by abricate
+assemblies: /home/malcummi/Data/Manuscripts/Salmonella_AMR/Agona_assemblies/Agona_200
 #Path to gene db location
 gene_db_location: /home/malcummi/Data/miniconda3/envs/abricate/db
-#Path to directory containing reference fasta file/s. This can be the same as your reads folder or just a folder called 'ref' in your snplord folder.
-#Note: Reference must be formatted to end in ".fa", not ".fasta", ".fsa" or anything else.
-gene_dbs: ['ISfinder_Feb_2020','EC_custom_Feb_2020', 'card', 'plasmidfinder', 'ecoh', 'ncbi', 'vfdb', 'colV_zoetis']
+#Name of gene databases you want to screen for
+#gene_dbs: ['ISfinder_Feb_2020','EC_custom_Feb_2020', 'card', 'plasmidfinder', 'ecoh', 'ncbi', 'vfdb', 'colV_zoetis']
+gene_dbs: ['EC_custom_Feb_2020', 'card', 'plasmidfinder', 'vfdb']
 #Output directory path
-outdir: /home/malcummi/Data/Manuscripts/ST117_2020/output/abricate
+outdir: /home/malcummi/Data/Manuscripts/Salmonella_AMR/Agona_assemblies/analysis/abricate
 #Output prefix
-prefix: ST117
+prefix: Agona_200
 #minimum nucleotide ID (default for abricate is 75)
 minimum_id: 75
 #minimum coverage (default for abricate is 0)

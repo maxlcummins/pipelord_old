@@ -1,0 +1,110 @@
+configfile:
+    "config_files/config.yaml"
+
+sample_ids, = glob_wildcards(config['assemblies']+"/{sample}.fasta")
+REF, = glob_wildcards(config['ref']+"/{reference}.fa")
+output_pre = config['prefix']
+
+print(sample_ids,)
+print(REF,)
+
+rule all:
+    input:
+        expand(config['outdir']+"/{output_prefix}/snippyout/{reference}/{sample}.out", sample=sample_ids, reference=REF, output_prefix = output_pre),        
+        expand(config['outdir']+"/{output_prefix}/fasttree/{reference}.clean.fullcore.tree", reference=REF, output_prefix = output_pre),
+        expand(config['outdir']+"/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv", reference=REF, output_prefix = output_pre)        
+
+rule snippy_run:
+    input:
+        ref = config['ref']+"/{reference}.fa",
+        assembly = config['assemblies']+"/{sample}.fasta",
+    output: 
+        directory(config['outdir']+"/{output_prefix}/snippyout/{reference}/{sample}.out")
+    threads:
+        5
+    conda: 
+        "config_files/snippy.yaml"
+    shell: 
+        "snippy --outdir {output} --ref {input.ref} --ctgs {input.assembly}"
+
+
+rule snippy_core:
+    input:
+        ref = config['ref']+"/{reference}.fa",    
+    output:    
+        config['outdir']+"/{output_prefix}/core/{reference}.full.aln"
+    threads:
+        32
+    conda:
+        "config_files/snippy.yaml"
+    params:
+        out_dir = config['outdir']
+    shell:
+        """
+        snippy-core --prefix {params.out_dir}/{wildcards.output_prefix}/core/{wildcards.reference} --ref {input.ref} {params.out_dir}/{wildcards.output_prefix}/snippyout/{wildcards.reference}/*.out
+        """
+    
+rule snippy_clean:
+    input:
+        config['outdir']+"/{output_prefix}/core/{reference}.full.aln"
+    output:
+        config['outdir']+"/{output_prefix}/core/{reference}.clean.full.aln"
+    threads:
+        32
+    conda: 
+        "config_files/snippy.yaml"    
+    shell:
+        "snippy-clean_full_aln {input} > {output}"
+
+rule gubbins:
+    input:
+        config['outdir']+"/{output_prefix}/core/{reference}.clean.full.aln"
+    output:
+        config['outdir']+"/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
+    params:
+        prefix = config['outdir']+"/{output_prefix}/gubbins/{reference}",
+        filt = config["gubbins"]["params"]
+    threads:
+        32
+    conda:
+        "config_files/gubbins.yaml"
+    shell:
+        """
+        run_gubbins.py -v {params.filt} -p {params.prefix} {input}
+        rm {wildcards.reference}.clean.full.aln.seq.joint.txt
+        """
+rule snp_sites:
+    input:
+        config['outdir']+"/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
+    output:
+        config['outdir']+"/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
+    threads:
+        32
+    conda: 
+        "config_files/snippy.yaml"
+    shell:
+        "snp-sites -c {input} > {output}"
+
+rule snp_dists:
+    input:
+        config['outdir']+"/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
+    output:
+        config['outdir']+"/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv"
+    threads:
+        32
+    conda: 
+        "config_files/snp_dists.yaml"
+    shell: 
+        "snp-dists -c {input} > {output}"
+
+rule fasttree:
+    input:
+        config['outdir']+"/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
+    output:
+        config['outdir']+"/{output_prefix}/fasttree/{reference}.clean.fullcore.tree"
+    threads:
+        32
+    conda:
+        "config_files/fasttree.yaml"
+    shell:
+        "fasttree -gtr -nt {input} > {output}"

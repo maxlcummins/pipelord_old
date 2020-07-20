@@ -2,52 +2,50 @@ import re
 import os
 
 configfile:
-	"config/config.yaml"
+    "config/config.yaml"
 
 sample_ids, = glob_wildcards(config['assembly_path']+"/{sample}.fasta")
 
 print(sample_ids)
 
 rule all:
-	input:
-		expand(config['output']+"/gffs/{sample}.gff", sample=sample_ids),
-		config['output']+"/Roary.out"
+    input:
+        expand(config['output']+"/gffs/{sample}.gff", sample=sample_ids),
+        config['output']+"/Roary.out"
 
 rule prokka:
-	input:
-		config['assembly_path']+"/{sample}.fasta"
-	output:
-		config['output']+"/gffs/{sample}.gff"
-	conda:
-		"config/prokka.yaml"
-	log:
-		config['output']+"/prokka/logs/{sample}.log"
-	params:
-		out = config['output']
-	threads:
-		16
-	shell:
-		"""
-		prokka --cpus 5 --usegenus --genus Escherichia --outdir {params.out}/{wildcards.sample}.out {input}
-		cp {params.out}/{wildcards.sample}.out/*.gff {output}
-		"""
+    input:
+        config['assembly_path']+"/{sample}.fasta"
+    output:
+        config['output']+"/gffs/{sample}.gff"
+    conda:
+        "config/prokka.yaml"
+    log:
+        config['output']+"/prokka/logs/{sample}.log"
+    params:
+        out = config['output'],
+        genus = config['genus']
+    threads:
+        5
+    shell:
+        """
+        prokka --cpus 5 {params.genus} --outdir {params.out}/{wildcards.sample}.out {input}
+        cp {params.out}/{wildcards.sample}.out/*.gff {output}
+        """
 
 rule roary:
-	input:
-		expand(config['output']+"/gffs/{sample}.gff", sample=sample_ids)
-	output:
-		directory(config['output']+"/Roary.out")
-	conda:
-		"config/roary.yaml"
-	log:
-		"roary/logs/roary.log"
-	params:
-		out = config['output']
-	shell:
-		"roary -p 16 -f {params.out}/Roary.out {input}"
-
-
-
-
-
-
+    input:
+        expand(config['output']+"/gffs/{sample}.gff", sample=sample_ids)
+    output:
+        directory(config['output']+"/Roary.out")
+    conda:
+        "config/roary.yaml"
+    threads:
+        32  
+    log:
+        "roary/logs/roary.log"
+    params:
+        out = config['output'],
+        threads_ = config['max_threads']
+    shell:
+        "roary -p {params.threads_} -f {params.out}/Roary.out {input}"
