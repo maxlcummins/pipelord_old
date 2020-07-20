@@ -3,6 +3,17 @@ configfile:
 
 sample_ids, = glob_wildcards(config['reads']+"/{sample}.R1.fastq.gz")
 
+### Need to be checked on Saturn 9, 10, 11 or 12 due to <8 threads count on them, if not working then  all following shinanigans need to be tested
+
+#Nthreads = snakemake.utils.available_cpu_count()
+
+#if Nthreads >= 8:
+#    Nthreads = 1
+#    print("In case of unstable behaviour please use CPU with more threads")
+#else :
+#    Nthreads = Nthreads/8
+#    print("nice!")
+
 
 print(sample_ids,)
 
@@ -20,6 +31,7 @@ rule shovill:
         directory(config['output']+"/assemblies/{sample}.out")
     log:
         config['output']+"/logs/shovill/{sample}.log"
+        threads : snakemake.utils.available_cpu_count()/8
     conda:
         "config/shovill.yaml"
     shell:
@@ -32,6 +44,7 @@ rule rename:
         config['output']+"/assemblies/{sample}.out"
     output:
         config['output']+"/final_assemblies/{sample}.fasta"
+        threads : snakemake.utils.available_cpu_count()
     shell:
         "cp {input}/contigs.fa {output}"
 

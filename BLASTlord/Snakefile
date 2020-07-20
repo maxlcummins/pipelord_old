@@ -23,6 +23,7 @@ rule makeblastdb:
                 config['ref_dbs']+"/{db}.fa.nhr"
         log:
                 config['output']+"/blast/logs/{db}.log"
+        threads : snakemake.utils.available_cpu_count()
         params:
                 blast_bin = config['blast_bin']
         shell:
@@ -36,6 +37,7 @@ rule blastn:
                 assemblies = config['assembly_path']+"/{sample}.fasta"
         output:
                 config['output']+"/blast/{db}/{sample}.csv"
+        threads : 2
         log:
                 config['output']+"/blast/{db}/{sample}.log"
         params:
@@ -50,6 +52,7 @@ rule name_cat:
                 config['output']+"/blast/{db}/{sample}.csv"
         output:
                 config['output']+"/blast/{db}/{sample}.new.tsv"
+        threads : snakemake.utils.available_cpu_count()
         priority: 8
         shell:
                 """
