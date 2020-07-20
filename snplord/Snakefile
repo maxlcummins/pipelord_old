@@ -4,6 +4,7 @@ configfile:
 sample_ids, = glob_wildcards(config['reads']+"/{sample}.R1.fastq.gz")
 REF, = glob_wildcards(config['ref']+"/{reference}.fa")
 output_pre = config['prefix']
+max_threads = snakemake.utils.available_cpu_count()
 
 print(sample_ids,)
 print(REF,)
@@ -32,6 +33,7 @@ rule snippy_core:
 		ref = config['ref']+"/{reference}.fa",	
 	output:	
 		config['outdir']+"/data/{output_prefix}/core/{reference}.full.aln"
+	threads: max_threads
 	conda:
 		"config_files/snippy.yaml"
 	params:
@@ -46,6 +48,7 @@ rule snippy_clean:
 		config['outdir']+"/data/{output_prefix}/core/{reference}.full.aln"
 	output:
 		config['outdir']+"/data/{output_prefix}/core/{reference}.clean.full.aln"
+	threads: max_threads
 	conda: 
 		"config_files/snippy.yaml"	
 	shell:
@@ -56,6 +59,7 @@ rule gubbins:
 		config['outdir']+"/data/{output_prefix}/core/{reference}.clean.full.aln"
 	output:
 		config['outdir']+"/data/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
+	threads: max_threads
 	params:
 		prefix = config['outdir']+"/data/{output_prefix}/gubbins/{reference}",
 		filt = config["gubbins"]["params"]
@@ -63,7 +67,7 @@ rule gubbins:
 		"config_files/gubbins.yaml"
 	shell:
 		"""
-		run_gubbins.py -v {params.filt} -p {params.prefix} {input}
+		run_gubbins.py --threads {max_threads} -v {params.filt} -p {params.prefix} {input}
 		rm {wildcards.reference}.clean.full.aln.seq.joint.txt
 		"""
 rule snp_sites:
@@ -71,6 +75,7 @@ rule snp_sites:
 		config['outdir']+"/data/{output_prefix}/gubbins/{reference}.filtered_polymorphic_sites.fasta"
 	output:
 		config['outdir']+"/data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
+	threads: max_threads
 	conda: 
 		"config_files/snippy.yaml"
 	shell:
@@ -81,6 +86,7 @@ rule snp_dists:
 		config['outdir']+"/data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
 	output:
 		config['outdir']+"/data/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv"
+	threads: max_threads
 	conda: 
 		"config_files/snp_dists.yaml"
 	shell: 
@@ -91,6 +97,7 @@ rule fasttree:
 		config['outdir']+"/data/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
 	output:
 		config['outdir']+"/data/{output_prefix}/fasttree/{reference}.clean.fullcore.tree"
+	threads: max_threads
 	conda:
 		"config_files/fasttree.yaml"
 	shell:
