@@ -4,6 +4,7 @@ configfile:
 sample_ids, = glob_wildcards(config['assemblies']+"/{sample}.fasta")
 REF, = glob_wildcards(config['ref']+"/{reference}.fa")
 output_pre = config['prefix']
+max_threads = snakemake.utils.available_cpu_count()
 
 print(sample_ids,)
 print(REF,)
@@ -34,7 +35,7 @@ rule snippy_core:
     output:    
         config['outdir']+"/{output_prefix}/core/{reference}.full.aln"
     threads:
-        32
+        max_threads
     conda:
         "config_files/snippy.yaml"
     params:
@@ -50,7 +51,7 @@ rule snippy_clean:
     output:
         config['outdir']+"/{output_prefix}/core/{reference}.clean.full.aln"
     threads:
-        32
+        max_threads
     conda: 
         "config_files/snippy.yaml"    
     shell:
@@ -65,7 +66,7 @@ rule gubbins:
         prefix = config['outdir']+"/{output_prefix}/gubbins/{reference}",
         filt = config["gubbins"]["params"]
     threads:
-        32
+        max_threads
     conda:
         "config_files/gubbins.yaml"
     shell:
@@ -79,7 +80,7 @@ rule snp_sites:
     output:
         config['outdir']+"/{output_prefix}/snp_sites/{reference}.clean.fullcore.aln"
     threads:
-        32
+        max_threads
     conda: 
         "config_files/snippy.yaml"
     shell:
@@ -91,7 +92,7 @@ rule snp_dists:
     output:
         config['outdir']+"/{output_prefix}/snp_dists/{reference}.pairwise_snps.csv"
     threads:
-        32
+        max_threads
     conda: 
         "config_files/snp_dists.yaml"
     shell: 
@@ -103,7 +104,7 @@ rule fasttree:
     output:
         config['outdir']+"/{output_prefix}/fasttree/{reference}.clean.fullcore.tree"
     threads:
-        32
+        max_threads
     conda:
         "config_files/fasttree.yaml"
     shell:

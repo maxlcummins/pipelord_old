@@ -19,12 +19,12 @@ rule shovill:
         directory(config['output']+"/assemblies/{sample}.out")
     log:
         config['output']+"/logs/shovill/{sample}.log"
-        threads : 8
+    threads : 8
     conda:
         "config/shovill.yaml"
     shell:
-        """
-        shovill --minlen 200 --outdir {output} --R1 {input.r1} --R2 {input.r2}
+        """ 
+        shovill --minlen 200 --cpus 8 --ram 24 --outdir {output} --R1 {input.r1} --R2 {input.r2}
         """
 
 rule rename:
@@ -32,7 +32,7 @@ rule rename:
         config['output']+"/assemblies/{sample}.out"
     output:
         config['output']+"/final_assemblies/{sample}.fasta"
-        threads : snakemake.utils.available_cpu_count()
+    threads : snakemake.utils.available_cpu_count()
     shell:
         "cp {input}/contigs.fa {output}"
 
