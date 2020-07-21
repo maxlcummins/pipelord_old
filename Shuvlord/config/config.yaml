@@ -1,8 +1,8 @@
 ###Configuration file
 #
 ## path to reads
-reads : /home/mlcummin/Data/Manuscripts/Femoral_Head_2019/reads
+reads : /projects/AusGEM/i3_genomes/Gulls_2018
 #
 ##path to output directory:
-output : /home/mlcummin/Data/Manuscripts/Femoral_Head_2019/output/assemblies
+output : /home/malcummi/Data/Manuscripts/Salmonella_Wollongong_2019_Gull/output/shovill
 #

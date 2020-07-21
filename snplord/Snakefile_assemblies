@@ -1,5 +1,5 @@
 configfile:
-	"config_files/snake-snippy.config.yaml"
+	"config_files/config.yaml"
 
 sample_ids, = glob_wildcards(config['assemblies']+"/{sample}.fasta")
 REF, = glob_wildcards(config['ref']+"/{reference}.fa")

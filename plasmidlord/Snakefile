@@ -6,6 +6,7 @@ configfile:
 
 sample_ids, = glob_wildcards(config['read_path']+"/{sample}.R1.fastq.gz")
 ref, = glob_wildcards(config['ref_path']+"/{reference}.fa")
+max_threads = snakemake.utils.available_cpu_count()
 
 print(sample_ids)
 print(ref)
@@ -24,6 +25,7 @@ rule index_ref:
     output:
         config['ref_path']+"/{reference}.fa.amb"
     priority: 10
+    threads : max_threads
     conda:
         "config/plasmidlord.yaml"
     shell:
@@ -67,6 +69,7 @@ rule heatmap:
         tick = config['tick_size'],
         out = config['output']
     priority: 0
+    threads : max_threads
     shell:
         "python2 plasmidlord.py -b {params.bins} -t {params.tick} {params.out}/Coverage_files/{wildcards.reference} {params.out}/{wildcards.reference}"
 
