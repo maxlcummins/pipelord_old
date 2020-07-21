@@ -11,6 +11,7 @@ output_prefix = re.sub('.*\/(.*)','\\1_output',config['read_path'])
 gene_dbs = expand(config['gene_dbs'])
 mlst_dbs = expand(config['mlst_dbs'])
 mlst_names = expand(config['mlst_names'])
+max_threads = snakemake.utils.available_cpu_count()
 
 
 if os.path.isdir('data/databases/custom'):
@@ -60,7 +61,7 @@ rule get_gene_dbs:
         "config_files/ariba_snake.yaml"
     log:
         "data/databases/logs/{gene_db}.access.log"
-    threads : snakemake.utils.available_cpu_count()
+    threads : max_threads
     params:
         prefix = "{gene_db}", gene_db=gene_dbs
     priority: 10
@@ -78,7 +79,7 @@ rule get_mlst:
         "config_files/ariba_snake.yaml"    
     params:
         db = config['mlst_dbs']
-    threads : snakemake.utils.available_cpu_count()
+    threads : max_threads
     priority: 10
     shell:
         """
@@ -92,7 +93,7 @@ rule prep_fqr:
         directory("data/databases/f.fqr_prep/f.fqr_snps.prepareref")
     conda:
         "config_files/ariba_snake.yaml"
-    threads : snakemake.utils.available_cpu_count()
+    threads : max_threads
     priority: 10
     shell:
         """
@@ -114,7 +115,7 @@ else:
             directory("data/databases/custom_prepared/c.{custom_db}.prepareref")
         conda: 
             "config_files/ariba_snake.yaml"
-        threads : snakemake.utils.available_cpu_count()
+        threads : max_threads
         priority: 10
         shell:
             """
@@ -242,7 +243,7 @@ rule clean:
     output:
         directory(config['output']+"/aribalord_in")
     priority: 1
-    threads : snakemake.utils.available_cpu_count()
+    threads : max_threads
     params:
         out = config['output']
     shell:

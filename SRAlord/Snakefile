@@ -29,7 +29,7 @@ rule download_sra:
 	conda:
 		"config_files/parallel-fastq-dump.yaml"
 	threads : max_threads
-	#params:
+
 	params:
         	id = "{SRA_num}",
 		out = config['output']

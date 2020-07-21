@@ -6,6 +6,7 @@ configfile:
 
 sample_ids, = glob_wildcards(config['assembly_path']+"/{sample}.fasta")
 dbs, = glob_wildcards(config['ref_dbs']+"/{db}.fa")
+max_threads = snakemake.utils.available_cpu_count()
 
 print(sample_ids)
 print(dbs)
@@ -23,7 +24,7 @@ rule makeblastdb:
                 config['ref_dbs']+"/{db}.fa.nhr"
         log:
                 config['output']+"/blast/logs/{db}.log"
-        threads : snakemake.utils.available_cpu_count()
+        threads : max_threads
         params:
                 blast_bin = config['blast_bin']
         shell:
@@ -52,7 +53,7 @@ rule name_cat:
                 config['output']+"/blast/{db}/{sample}.csv"
         output:
                 config['output']+"/blast/{db}/{sample}.new.tsv"
-        threads : snakemake.utils.available_cpu_count()
+        threads : max_threads
         priority: 8
         shell:
                 """
