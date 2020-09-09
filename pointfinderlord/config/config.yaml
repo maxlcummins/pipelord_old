@@ -1,0 +1,13 @@
+##Configuration file for pointfinderlord
+#Path to assemblies to be screened by pointfinder
+assemblies: /projects/AusGEM/Users/Max/Manuscripts/AVC171/AVC171/assemblies/all
+#Output directory path
+outdir: /projects/AusGEM/Users/Max/Manuscripts/AVC171/AVC171/analysis/pointfinder
+#Output prefix
+prefix: AVC171_all
+#Species
+#E. coli
+species: "-s escherichia_coli"
+#species: "-s salmonella"
+#Use the one below where you have multiple species
+#species: ""
