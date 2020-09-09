@@ -1,0 +1,62 @@
+pmlst Results
+
+pMLST profile: IncF RST
+
+Sequence Type: [F2:A-:B1]
+**************************************************************************************
+Locus    Identity    Coverage    Alignment Length    Allele Length    Gaps    Allele
+**************************************************************************************
+FIA      -           -           -                   -                -       No hit found
+FIB      100.0       100.0       373                 373              0       FIB_1
+FIC      -           -           -                   -                -       No hit found
+FII      100.0       100.0       157                 157              0       FII_2
+FIIK     -           -           -                   -                -       No hit found
+FIIS     -           -           -                   -                -       No hit found
+FIIY     -           -           -                   -                -       No hit found
+======================================================================================
+
+
+Extended Output:
+
+# FIB_1
+template: 	ATTCAGACATCAAAAAACTGTTCGGCGAGGTGGATAAGTCCTCCGGTGAGCTGGTGACAC
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	ATTCAGACATCAAAAAACTGTTCGGCGAGGTGGATAAGTCCTCCGGTGAGCTGGTGACAC
+
+template: 	TGACACCAAACAATAACAACACCGTACAACCTGTGGCGCTGATGCGTCTGGGCGTTTTTG
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	TGACACCAAACAATAACAACACCGTACAACCTGTGGCGCTGATGCGTCTGGGCGTTTTTG
+
+template: 	TACCGACCCTTAAATCACTGAAGAACAGTAAAAAAAATACACTGTCACGTACTGATGCCA
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	TACCGACCCTTAAATCACTGAAGAACAGTAAAAAAAATACACTGTCACGTACTGATGCCA
+
+template: 	CGGAAGAGCTGACACGTCTTTCCCTGGCCCGTGCTGAGGGATTCGATAAGGTTGAGATCA
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	CGGAAGAGCTGACACGTCTTTCCCTGGCCCGTGCTGAGGGATTCGATAAGGTTGAGATCA
+
+template: 	CCGGCCCCCGCCTGGATATGGATAATGATTTCAAGACCTGGGTGGGGATCATTCATTCCT
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	CCGGCCCCCGCCTGGATATGGATAATGATTTCAAGACCTGGGTGGGGATCATTCATTCCT
+
+template: 	TTGCCCGCCATAACGTGATTGGTGACAAAGTTGAACTGCCTTTTGTTGAGTTTGCAAAAC
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	TTGCCCGCCATAACGTGATTGGTGACAAAGTTGAACTGCCTTTTGTTGAGTTTGCAAAAC
+
+template: 	TGTGTGGTATACC
+          	|||||||||||||
+query:    	TGTGTGGTATACC
+
+# FII_2
+template: 	CAAAAACCCCGATAATCTTCTTCAACTTTGGCGAGTACGAAAAGATTACCGGGGCCCACT
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	CAAAAACCCCGATAATCTTCTTCAACTTTGGCGAGTACGAAAAGATTACCGGGGCCCACT
+
+template: 	TAAACCGTATAGCCAACAATTCAGCTATGCGGGGAGTATAGTTATATGCCCGGAAAAGTT
+          	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+query:    	TAAACCGTATAGCCAACAATTCAGCTATGCGGGGAGTATAGTTATATGCCCGGAAAAGTT
+
+template: 	CAAGACTTCTTTCTGTGCTCGCTCCTTCTGCGCATTG
+          	|||||||||||||||||||||||||||||||||||||
+query:    	CAAGACTTCTTTCTGTGCTCGCTCCTTCTGCGCATTG
+
