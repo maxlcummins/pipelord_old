@@ -29,5 +29,5 @@ rule phylosift_process:
         """
         cat PSout/*/alignDir/concat.updated.1.fasta > concat_PS.fasta
         perl -p -i -e "s/\.fasta.+//g" concat_PS.fasta
-        ~/Data/PhyloSift/bin/FastTree -nt -gtr <concat_PS.fasta> Phylosift.tree
+        ~/Data/PhyloSift/bin/FastTree <concat_PS.fasta> Phylosift.tree
         """
