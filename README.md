@@ -11,15 +11,15 @@ If you know, you know. Currently, builds of Snakemake pipelines that are '-j'abl
 | Name  | -j status |
 | ------------- | ------------- |
 |  abricatelord  |&#9745;|
-|  aribalord  ||
+|  aribalord  |&#9745;|
 |  BISGIlord  ||
-|  BLASTlord  ||
+|  BLASTlord  |&#9745;|
 |  pangenomelord  ||
 |  phylosiftlord  ||
-|  plasmidlord  ||
-|  shuvlord  ||
-|  snplord  ||
-|  SRAlord  ||
+|  plasmidlord  |&#9745;|
+|  shuvlord  |&#9745;|
+|  snplord  |&#9745;|
+|  SRAlord  |&#9745;|
 
 If you find one of the above pipelines to be happy to be -j'd then please post in the [issues tab](https://github.com/maxlcummins/pipelord/issues) above mentioning which one it is and we will update this wiki.
 

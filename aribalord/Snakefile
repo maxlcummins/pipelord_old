@@ -44,7 +44,7 @@ rule all:
         expand(config['output']+"/ariba_out/fqr_snps/{sample}.out", sample=sample_ids),        
         expand(config['output']+"/ariba_out/s.{gene_db}/{sample}.out", gene_db=gene_dbs, sample=sample_ids),
         expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out", mlst_name=mlst_names, sample=sample_ids),
-        expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids),
+        expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out.report/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids),
         expand(config['output']+"/ariba_out/MLST_summary/{mlst_name}_MLST.tsv", mlst_name=mlst_names),
         expand(config['output']+"/ariba_out/summaries/{gene_db}.csv", gene_db=gene_dbs),
         expand(config['output']+"/ariba_out/custom_summaries/{custom_db}.csv", custom_db=custom_dbs),
@@ -186,8 +186,9 @@ rule mlst_names:
     input:
         config['output']+"/ariba_out/m.{mlst_name}/{sample}.out"
     output:
-        config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv"
+        config['output']+"/ariba_out/m.{mlst_name}/{sample}.out.report/mlst_report.new.tsv"
     priority: 8
+    threads: max_threads
     shell:
         """
         for f in {input} ; do sed 's@$@\\t{wildcards.sample}@' ${{f}}/mlst_report.tsv > {output} ; done
@@ -195,10 +196,11 @@ rule mlst_names:
 
 rule mlst_cat:
     input:
-        expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids)
+        expand(config['output']+"/ariba_out/m.{mlst_name}/{sample}.out.report/mlst_report.new.tsv", mlst_name=mlst_names, sample=sample_ids)
     output:
         config['output']+"/ariba_out/MLST_summary/{mlst_name}_MLST.tsv"
     priority: 8
+    threads: max_threads
     shell:
         """
         cat {input} > {output}
@@ -216,6 +218,7 @@ rule standard_summary:
         db = config['output']+"/ariba_out/summaries/{gene_db}",
         out = config['output']
     priority: 8
+    threads: max_threads
     shell:
         """
         ariba summary --no_tree --cluster_cols assembled,ref_seq {params.db} {params.outdir}
@@ -232,6 +235,7 @@ rule custom_summary:
         db = config['output']+"/ariba_out/custom_summaries/{custom_db}",
         out = config['output']
     priority: 8
+    threads: max_threads
     shell:
         """
         ariba summary --no_tree --cluster_cols assembled,ref_seq {params.db} {params.outdir}
